@@ -8,6 +8,12 @@
   assets/images/outfits/o01-top.webp
   assets/images/outfits/o01-bottom.webp
   assets/models/outfits/o01.glb
+
+  Sewing patterns (single-garment examples only): an optional "pattern"
+  field pointing to an RGBA PNG/WebP of the flattened UV/sewing pattern.
+  assets/images/patterns/s01.png
+  The "3D / Pattern" toggle only appears once that file actually exists,
+  so it's safe to list a path here before the file is ready.
 */
 
 window.OMNIFABRIC = {
@@ -17,12 +23,7 @@ window.OMNIFABRIC = {
     code: "", // Put GitHub code URL here when public.
   },
 
-  bibtex: `@article{huang2026omnifabric,
-  title={OmniFabric: Coherent UV Space Texture Synthesis for 3D Garment Reconstruction},
-  author={Huang, Ding-Jiun and Wang, Yuanhao and Zhang, Cheng and Bertiche, Hugo and Ichim, Alexandru-Eugen and Beeler, Thabo and De la Torre, Fernando},
-  journal={ACM SIGGRAPH Asia Conference Papers},
-  year={2026}
-}`,
+  bibtex: `Coming soon...`,
 
   single: [
     {
@@ -31,6 +32,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s01.webp"],
       model: "assets/models/singles/s01.glb",
+      pattern: "assets/images/patterns/s01.png",
     },
     {
       id: "S02",
@@ -38,6 +40,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s02.webp"],
       model: "assets/models/singles/s02.glb",
+      pattern: "assets/images/patterns/s02.png",
     },
     {
       id: "S03",
@@ -45,6 +48,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s03.webp"],
       model: "assets/models/singles/s03.glb",
+      pattern: "assets/images/patterns/s03.png",
     },
     {
       id: "S04",
@@ -52,6 +56,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s04.webp"],
       model: "assets/models/singles/s04.glb",
+      pattern: "assets/images/patterns/s04.png",
     },
     {
       id: "S05",
@@ -59,6 +64,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s05.webp"],
       model: "assets/models/singles/s05.glb",
+      pattern: "assets/images/patterns/s05.png",
     },
     {
       id: "S06",
@@ -66,6 +72,7 @@ window.OMNIFABRIC = {
       category: "Dress",
       inputs: ["assets/images/singles/s06.webp"],
       model: "assets/models/singles/s06.glb",
+      pattern: "assets/images/patterns/s06.png",
     },
   ],
 

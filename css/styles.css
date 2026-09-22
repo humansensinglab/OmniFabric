@@ -1663,3 +1663,72 @@ button, input { font: inherit; }
   display: none;
 }
 
+/* ============================================================
+   V13 SEWING-PATTERN VIEWER (single-garment examples only)
+   - compact "3D / Pattern" toggle in the viewer meta bar
+   - the pattern view is a flat, non-rotatable 2D image: scroll/pinch
+     to zoom, drag to pan; a soft drop-shadow keeps its transparent
+     PNG edges from blending into the studio backdrop
+   ============================================================ */
+
+.catalog-viewer__mode {
+  flex: 0 0 auto;
+  display: flex;
+  border: 1px solid var(--line);
+}
+.catalog-viewer__mode-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink-blue);
+  padding: 0 7px;
+  height: 18px;
+  font-family: var(--font-ui);
+  font-size: 6.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.catalog-viewer__mode-btn + .catalog-viewer__mode-btn {
+  border-left: 1px solid var(--line);
+}
+.catalog-viewer__mode-btn[aria-pressed="true"] {
+  background: var(--blue-deep);
+  color: var(--white);
+}
+.catalog-viewer__mode-btn[aria-pressed="false"]:hover {
+  background: rgba(108, 158, 197, .14);
+}
+
+.catalog-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+.catalog-pattern[hidden] {
+  display: none;
+}
+.catalog-pattern:active {
+  cursor: grabbing;
+}
+.catalog-pattern__image {
+  max-width: 80%;
+  max-height: 80%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  filter:
+    drop-shadow(0 16px 30px rgba(23, 41, 63, .30))
+    drop-shadow(0 3px 9px rgba(23, 41, 63, .18));
+}
+
