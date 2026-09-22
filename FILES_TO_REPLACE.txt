@@ -1,0 +1,22 @@
+REQUIRED BEFORE FINAL LAUNCH
+============================
+assets/hero/omnifabric_teaser.mp4
+js/data.js                      <-- fill real 12 examples + final URLs
+
+FOR EACH SINGLE-GARMENT EXAMPLE
+===============================
+assets/images/singles/*.webp
+assets/models/singles/*.glb
+
+FOR EACH COMPOSED-OUTFIT EXAMPLE
+================================
+assets/images/outfits/*-top.webp
+assets/images/outfits/*-bottom.webp
+assets/models/outfits/*.glb
+
+RECOMMENDED / OPTIONAL
+======================
+assets/images/figures/method.webp
+assets/videos/highlight-01.mp4
+assets/videos/highlight-02.mp4
+assets/env/studio.hdr           <-- only if you later wire a custom environment into model-viewer

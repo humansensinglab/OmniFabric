@@ -1,0 +1,1665 @@
+:root {
+  --ivory: #f4f0e8;
+  --paper: #fbf8f1;
+  --blue-light: #6c9ec5;
+  --blue-mid: #5d98c4;
+  --blue-deep: #2b77a4;
+  --ink-blue: #344863;
+  --white: #ffffff;
+  --yellow: #e5d266;
+  --line: rgba(52, 72, 99, 0.24);
+  --line-light: rgba(255, 255, 255, 0.35);
+  --font-display: "Bodoni Moda", "Times New Roman", serif;
+  --font-ui: "Inter", Arial, sans-serif;
+  --shell: min(1440px, calc(100vw - 64px));
+  --section-pad: clamp(88px, 10vw, 160px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink-blue);
+  font-family: var(--font-ui);
+  font-weight: 300;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input { font: inherit; }
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  transform: translateY(-200%);
+  z-index: 9999;
+  background: var(--paper);
+  padding: 10px 14px;
+}
+.skip-link:focus { transform: none; }
+
+.shell { width: var(--shell); margin-inline: auto; }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--blue-mid);
+  color: var(--white);
+}
+.hero__video,
+.hero__wash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero__video { object-fit: cover; object-position: center center; }
+.hero__wash {
+  background: linear-gradient(to bottom, rgba(24,66,105,.08), rgba(12,49,83,.02) 54%, rgba(9,38,63,.09));
+  pointer-events: none;
+}
+.hero__masthead {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: clamp(5vh, 7.5vw, 9vh);
+}
+.hero__title-zone {
+  /* Editorial masthead: intentionally unboxed. The video itself provides the frame. */
+  width: min(92vw, 1420px);
+  min-height: clamp(210px, 22vw, 320px);
+  padding: clamp(10px, 1.5vw, 24px) clamp(24px, 4vw, 72px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-shadow: 0 1px 16px rgba(17, 48, 73, .16);
+}
+.hero__eyebrow {
+  margin: 0 0 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .26em;
+  font-weight: 400;
+}
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(68px, 9.6vw, 154px);
+  line-height: .86;
+  letter-spacing: -.045em;
+  font-weight: 400;
+}
+.hero__subtitle {
+  margin: 14px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.75vw, 29px);
+  line-height: 1.15;
+  max-width: 900px;
+}
+.hero__authors {
+  margin: 3px auto 0;
+  max-width: 1240px;
+  font-family: var(--font-display);
+  font-size: clamp(12px, 1.05vw, 17px);
+  line-height: 1.7;
+  letter-spacing: .015em;
+}
+.hero__authors a { text-decoration: none; border-bottom: 1px solid transparent; }
+.hero__authors a:hover { border-bottom-color: currentColor; }
+.hero__links {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 24px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .17em;
+  font-weight: 400;
+}
+.hero__links a,
+.hero__links .text-link {
+  color: var(--white);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.7);
+  padding-bottom: 2px;
+}
+.is-disabled { opacity: .45; pointer-events: none; }
+.text-link {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.hero__scroll {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: .2em;
+  animation: float 2.8s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,7px)} }
+
+/* SECTIONS */
+.section { padding: var(--section-pad) 0; position: relative; }
+.section--ivory { background: var(--ivory); }
+.section--paper { background: var(--paper); }
+.section--blue { background: var(--blue-deep); color: var(--white); }
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: .45fr 1fr 2.2fr;
+  grid-template-areas:
+    "index kicker kicker"
+    "index title title"
+    ". . copy";
+  gap: 14px 30px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.section-index {
+  grid-area: index;
+  font-family: var(--font-display);
+  color: var(--blue-mid);
+  font-size: clamp(70px, 10vw, 160px);
+  line-height: .75;
+  letter-spacing: -.06em;
+  opacity: .92;
+}
+.section-kicker {
+  grid-area: kicker;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--blue-deep);
+}
+.section-kicker--light { color: rgba(255,255,255,.82); }
+.section-title {
+  grid-area: title;
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(44px, 6vw, 92px);
+  line-height: .98;
+  letter-spacing: -.035em;
+  color: var(--ink-blue);
+}
+.section-title--compact { font-size: clamp(42px, 5vw, 76px); max-width: 970px; }
+.section--blue .section-title { color: var(--white); }
+.section-copy { grid-area: copy; font-size: clamp(15px, 1.2vw, 18px); max-width: 720px; }
+.section-copy p:first-child { font-size: 1.15em; }
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: end;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-bottom: 42px;
+}
+.section-heading-row--light { border-color: var(--line-light); }
+.section-side-note { max-width: 300px; font-size: 12px; line-height: 1.5; opacity: .8; }
+
+.media-frame {
+  min-height: clamp(360px, 52vw, 760px);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(108,158,197,.15), transparent 42%),
+    var(--ivory);
+}
+.placeholder-copy,
+.video-placeholder {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 10px;
+}
+.placeholder-copy small,
+.video-placeholder small { display:block; margin-top:7px; opacity:.62; text-transform:none; letter-spacing:.03em; }
+
+.method-figure {
+  margin: 0;
+  min-height: 0;
+  background: var(--ivory);
+  overflow: hidden;
+}
+.method-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(78vh, 920px);
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ATELIER */
+.atelier-intro {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:40px;
+  border-top:1px solid var(--line);
+  padding-top:20px;
+  margin-bottom:70px;
+}
+.atelier-intro p { max-width:320px; font-size:12px; margin-bottom:8px; }
+.demo-block { padding-bottom: 90px; }
+.demo-block--second { padding-top: 50px; border-top: 1px solid var(--line); }
+.demo-block__header {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+.demo-block__header > div { display:flex; align-items:baseline; gap:14px; }
+.demo-letter {
+  font-family:var(--font-display);
+  color:var(--blue-mid);
+  font-size:40px;
+  line-height:1;
+}
+.demo-block h3 {
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(26px, 2.8vw, 44px);
+}
+.demo-counter { font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+.demo-stage {
+  display:grid;
+  grid-template-columns:minmax(220px, .72fr) minmax(0, 2.2fr);
+  min-height: min(72vh, 780px);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.reference-panel {
+  padding:24px 28px 24px 0;
+  border-right:1px solid var(--line);
+  display:grid;
+  align-content:center;
+  gap:20px;
+}
+.reference-card { margin:0; }
+.reference-image,
+.reference-empty {
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:contain;
+  background:rgba(108,158,197,.08);
+  border:1px solid rgba(52,72,99,.16);
+}
+.reference-empty { display:grid; place-items:center; text-align:center; padding:20px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; }
+.reference-card figcaption {
+  margin-top:8px;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+.viewer-panel { min-width:0; padding-left:28px; display:grid; grid-template-rows:auto 1fr; }
+.viewer-meta {
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:10px;
+}
+.viewer-reset { text-transform:uppercase; letter-spacing:.14em; font-size:9px; }
+.viewer-wrap { position:relative; min-height:520px; overflow:hidden; }
+.garment-viewer { width:100%; height:100%; min-height:520px; background:transparent; --poster-color: transparent; user-select:none; -webkit-user-select:none; }
+.viewer-empty {
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  gap:6px;
+  background:linear-gradient(145deg, rgba(108,158,197,.08), rgba(255,255,255,.12));
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  /* Never let the empty-state layer steal pointer events from model-viewer. */
+  pointer-events:none;
+}
+.viewer-empty[hidden] { display:none !important; }
+.viewer-empty small { text-transform:none; letter-spacing:.02em; opacity:.65; }
+.viewer-hint {
+  position:absolute;
+  right:16px;
+  bottom:14px;
+  font-size:8px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.demo-tabs {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  border-bottom:1px solid var(--line);
+}
+.demo-tab {
+  appearance:none;
+  background:transparent;
+  color:var(--ink-blue);
+  border:0;
+  border-right:1px solid var(--line);
+  padding:14px 8px;
+  cursor:pointer;
+  font-family:var(--font-display);
+  font-size:18px;
+  transition:background .2s ease,color .2s ease;
+}
+.demo-tab:first-child { border-left:1px solid var(--line); }
+.demo-tab:hover { background:rgba(108,158,197,.09); }
+.demo-tab[aria-selected="true"] { background:var(--blue-deep); color:var(--white); }
+
+/* VIDEO / PAPER */
+.video-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-light); }
+.video-placeholder {
+  min-height:clamp(260px,32vw,480px);
+  background:rgba(255,255,255,.06);
+  display:grid;
+  place-content:center;
+}
+.paper-section { display:flex; justify-content:space-between; align-items:end; gap:50px; border-top:1px solid var(--line); padding-top:20px; }
+.paper-subtitle { max-width:720px; }
+.paper-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.outline-link {
+  display:inline-flex;
+  align-items:center;
+  min-height:42px;
+  padding:0 18px;
+  border:1px solid var(--ink-blue);
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-size:9px;
+  background:transparent;
+  color:var(--ink-blue);
+  border-radius:0;
+  transition:.2s ease;
+}
+.outline-link:hover { background:var(--ink-blue); color:var(--ivory); }
+.outline-link--button { cursor:pointer; }
+
+.footer { background:var(--ink-blue); color:var(--ivory); padding:28px 0; }
+.footer__grid { display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; font-size:10px; text-transform:uppercase; letter-spacing:.15em; }
+.footer__grid p { text-align:center; }
+.footer__grid a { text-align:right; text-decoration:none; }
+.footer__mark { font-family:var(--font-display); font-size:21px; text-transform:none; letter-spacing:0; }
+
+.toast {
+  position:fixed;
+  z-index:999;
+  left:50%;
+  bottom:28px;
+  transform:translate(-50%,20px);
+  background:var(--ink-blue);
+  color:var(--ivory);
+  padding:10px 16px;
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s ease;
+}
+.toast.is-visible { opacity:1; transform:translate(-50%,0); }
+
+.reveal { opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease; }
+.reveal.is-visible { opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  .reveal { opacity:1; transform:none; transition:none; }
+  .hero__scroll { animation:none; }
+}
+
+@media (max-width: 900px) {
+  :root { --shell:min(100% - 34px, 1440px); --section-pad:80px; }
+  .hero__masthead { padding-top:24px; }
+  .hero__title-zone { width:calc(100vw - 34px); min-height:auto; padding:18px 16px; }
+  .hero__title { font-size:clamp(58px,15vw,100px); }
+  .hero__authors { max-width:680px; }
+  .editorial-grid { grid-template-columns:.45fr 1.8fr; grid-template-areas:"index kicker" "index title" ". copy"; }
+  .section-heading-row, .atelier-intro, .paper-section { align-items:flex-start; flex-direction:column; }
+  .demo-stage { grid-template-columns:1fr; }
+  .reference-panel { border-right:0; border-bottom:1px solid var(--line); padding:22px 0; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .reference-panel:not(.reference-panel--pair) { grid-template-columns:minmax(160px,45%); }
+  .viewer-panel { padding-left:0; }
+  .viewer-wrap, .garment-viewer { min-height:520px; }
+  .video-grid { grid-template-columns:1fr; }
+}
+
+@media (max-width: 600px) {
+  :root { --shell:calc(100vw - 24px); --section-pad:64px; }
+  .hero__title-zone { width:calc(100vw - 24px); }
+  .hero__eyebrow { font-size:8px; }
+  .hero__subtitle { font-size:14px; margin-top:10px; }
+  .hero__authors { font-size:10px; line-height:1.55; }
+  .hero__links { gap:7px 14px; font-size:8px; }
+  .editorial-grid { display:block; }
+  .section-index { font-size:76px; margin-bottom:22px; }
+  .section-title { font-size:45px; }
+  .section-copy { margin-top:32px; }
+  .demo-tabs { grid-template-columns:repeat(3,1fr); }
+  .demo-tab:nth-child(4) { border-left:1px solid var(--line); }
+  .viewer-wrap, .garment-viewer { min-height:440px; }
+  .footer__grid { grid-template-columns:1fr; gap:7px; text-align:left; }
+  .footer__grid p, .footer__grid a { text-align:left; margin:0; }
+}
+
+/* ============================================================
+   V3 EDITORIAL GALLERIES — all examples visible simultaneously
+   ============================================================ */
+
+/* Method figure: the artwork should float directly on the page, with no box. */
+.method-figure.media-frame {
+  display: block;
+  border: 0;
+  background: transparent;
+  min-height: 0;
+  overflow: visible;
+}
+.method-image {
+  width: 100%;
+  max-height: none;
+  object-fit: contain;
+}
+
+.atelier-intro--dense {
+  margin-bottom: clamp(48px, 6vw, 78px);
+}
+
+.gallery-section {
+  padding-bottom: clamp(82px, 9vw, 132px);
+}
+.gallery-section--outfits {
+  padding-top: clamp(48px, 6vw, 86px);
+  border-top: 1px solid var(--line);
+}
+.gallery-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 32px;
+  margin-bottom: 26px;
+}
+.gallery-section__header > div {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.gallery-section__header h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -.025em;
+}
+.gallery-section__header > p {
+  max-width: 350px;
+  margin: 0 0 3px;
+  font-size: 11px;
+  line-height: 1.55;
+  opacity: .72;
+}
+
+/* ---------- SINGLE-GARMENT: two demo pairs per row ---------- */
+.single-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(22px, 2.5vw, 42px);
+  row-gap: clamp(38px, 4vw, 60px);
+}
+.single-demo-pair {
+  min-width: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.catalog-index {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .17em;
+  color: var(--ink-blue);
+}
+.catalog-index > span:first-child {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--blue-deep);
+}
+.single-demo-pair__body {
+  display: grid;
+  grid-template-columns: minmax(118px, .66fr) minmax(0, 1.34fr);
+  min-height: 410px;
+  background: rgba(251, 248, 241, .4);
+  border-bottom: 1px solid var(--line);
+}
+.single-demo-pair__input {
+  min-width: 0;
+  padding: 16px 16px 14px 0;
+}
+
+/* ---------- Shared reference-image styling ---------- */
+.catalog-reference {
+  height: 100%;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.catalog-reference__image,
+.catalog-reference__empty {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+  background: rgba(255,255,255,.38);
+  border: 1px solid rgba(52,72,99,.17);
+}
+.catalog-reference__empty {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.catalog-reference figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+  font-size: 7.5px;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+}
+
+/* ---------- Shared viewer styling ---------- */
+.catalog-viewer {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 38px 1fr;
+  border-left: 1px solid var(--line);
+}
+.catalog-viewer__meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 10px 0 13px;
+  border-bottom: 1px solid var(--line);
+  font-size: 7.5px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+.catalog-viewer__meta > span {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.catalog-viewer__reset {
+  flex: 0 0 auto;
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.catalog-viewer__stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 52% 46%, rgba(255,255,255,.70), rgba(255,255,255,.26) 42%, rgba(108,158,197,.055) 100%);
+}
+.garment-viewer--catalog {
+  width: 100%;
+  height: 100%;
+  min-height: 370px;
+  background: transparent;
+  --poster-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.viewer-empty--catalog {
+  z-index: 2;
+}
+.viewer-hint--catalog {
+  right: 10px;
+  bottom: 9px;
+  font-size: 6.5px;
+  opacity: .72;
+}
+
+/* ---------- COMPOSED OUTFITS: one example per row ---------- */
+.outfit-demo-stack {
+  border-bottom: 1px solid var(--line);
+}
+.outfit-demo-row {
+  display: grid;
+  grid-template-columns: 74px minmax(280px, .9fr) minmax(0, 1.55fr);
+  min-height: 530px;
+  border-top: 1px solid var(--line);
+}
+.outfit-demo-row:nth-child(even) {
+  background: rgba(251, 248, 241, .34);
+}
+.outfit-demo-row__index {
+  padding: 17px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.outfit-demo-row__index > span {
+  font-family: var(--font-display);
+  color: var(--blue-deep);
+  font-size: 34px;
+  line-height: .9;
+}
+.outfit-demo-row__index > small {
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  line-height: 1.4;
+}
+.outfit-demo-row__inputs {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 22px 18px 0;
+}
+.catalog-reference--compact .catalog-reference__image,
+.catalog-reference--compact .catalog-reference__empty {
+  object-fit: contain;
+}
+.catalog-viewer--outfit {
+  min-height: 530px;
+}
+.catalog-viewer--outfit .garment-viewer--catalog {
+  min-height: 490px;
+}
+
+/* Old selector-stage UI is intentionally retired in V3. */
+.demo-block,
+.demo-stage,
+.demo-tabs,
+.demo-counter {
+  /* Kept harmless in case older markup remains cached. */
+}
+
+@media (max-width: 1120px) {
+  .single-demo-grid {
+    grid-template-columns: 1fr;
+  }
+  .single-demo-pair__body {
+    min-height: 450px;
+    grid-template-columns: minmax(180px, .72fr) minmax(0, 1.5fr);
+  }
+  .outfit-demo-row {
+    grid-template-columns: 56px minmax(240px, .88fr) minmax(0, 1.32fr);
+  }
+}
+
+@media (max-width: 820px) {
+  .gallery-section__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .gallery-section__header > p { max-width: 500px; }
+  .outfit-demo-row {
+    grid-template-columns: 48px 1fr;
+    grid-template-areas:
+      "index inputs"
+      "index viewer";
+  }
+  .outfit-demo-row__index { grid-area: index; }
+  .outfit-demo-row__inputs { grid-area: inputs; padding-right: 0; }
+  .outfit-demo-row > .catalog-viewer { grid-area: viewer; border-left: 0; border-top: 1px solid var(--line); }
+  .catalog-viewer--outfit,
+  .catalog-viewer--outfit .garment-viewer--catalog { min-height: 470px; }
+}
+
+@media (max-width: 620px) {
+  .single-demo-pair__body {
+    grid-template-columns: 1fr;
+  }
+  .single-demo-pair__input { padding: 12px 0 18px; }
+  .single-demo-pair__input .catalog-reference__image,
+  .single-demo-pair__input .catalog-reference__empty {
+    max-height: 420px;
+  }
+  .single-demo-pair__body > .catalog-viewer {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .garment-viewer--catalog { min-height: 430px; }
+  .outfit-demo-row {
+    display: block;
+  }
+  .outfit-demo-row__index {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 14px 0 8px;
+  }
+  .outfit-demo-row__inputs {
+    grid-template-columns: 1fr 1fr;
+    padding: 10px 0 18px;
+  }
+  .catalog-viewer--outfit { border-top: 1px solid var(--line); }
+}
+
+/* ============================================================
+   V4 REFINEMENTS
+   ============================================================ */
+
+/* Slightly stronger venue line above the hero title. */
+.hero__eyebrow {
+  font-size: clamp(13px, 1.05vw, 17px);
+  letter-spacing: .24em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+/* Main sections: one large editorial title + one paragraph. */
+.simple-section {
+  border-top: 1px solid var(--line);
+  padding-top: clamp(18px, 2vw, 26px);
+}
+.simple-section--light {
+  border-top-color: var(--line-light);
+}
+.main-section-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(62px, 8.2vw, 126px);
+  font-weight: 400;
+  line-height: .88;
+  letter-spacing: -.052em;
+  color: var(--ink-blue);
+}
+.simple-section--light .main-section-title {
+  color: var(--white);
+}
+.main-section-copy {
+  width: min(760px, 66vw);
+  margin: clamp(30px, 4vw, 54px) 0 0 auto;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.72;
+}
+.simple-section--light .main-section-copy {
+  color: rgba(255,255,255,.88);
+}
+
+/* Method artwork: 4/5-ish of viewport width, unboxed, softly rounded. */
+.method-figure.media-frame {
+  width: min(80vw, 1180px);
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 0 22px 60px rgba(52,72,99,.075);
+}
+.method-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  border-radius: inherit;
+}
+
+/* Clean subsection headers; no explanatory side-note copy. */
+.gallery-section {
+  padding-top: clamp(66px, 7vw, 100px);
+}
+.gallery-section--outfits {
+  padding-top: clamp(64px, 7vw, 100px);
+}
+.gallery-section__header {
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+}
+.gallery-section__header > p {
+  display: none;
+}
+.gallery-section__header h3 {
+  font-size: clamp(31px, 3.25vw, 50px);
+}
+
+/* Reference images use a consistent portrait 3:4 frame and fill by cropping. */
+.catalog-reference {
+  height: auto;
+}
+.catalog-reference__image,
+.catalog-reference__empty {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  flex: none;
+  object-fit: cover;
+  object-position: center center;
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(52,72,99,.15);
+}
+.catalog-reference__empty {
+  display: grid;
+}
+
+/* Single-garment cards remain two pairs per row. */
+.single-demo-pair__body {
+  grid-template-columns: minmax(126px, .66fr) minmax(0, 1.34fr);
+  min-height: 390px;
+  align-items: stretch;
+}
+.single-demo-pair__input {
+  display: flex;
+  align-items: center;
+  padding: 16px 16px 16px 0;
+}
+.single-demo-pair__input .catalog-reference {
+  width: 100%;
+}
+.garment-viewer--catalog {
+  min-height: 350px;
+}
+
+/* Composed outfits now mirror the single-garment grid: two examples per row.
+   Inside each pair, the two 3:4 references stack vertically on the left. */
+.outfit-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(22px, 2.5vw, 42px);
+  row-gap: clamp(42px, 4.5vw, 68px);
+}
+.outfit-demo-pair {
+  min-width: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.outfit-demo-pair__body {
+  display: grid;
+  grid-template-columns: minmax(126px, .72fr) minmax(0, 1.28fr);
+  min-height: 520px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(251,248,241,.34);
+}
+.outfit-demo-pair__inputs {
+  min-width: 0;
+  padding: 14px 14px 14px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.outfit-demo-pair__inputs .catalog-reference {
+  min-width: 0;
+}
+.outfit-demo-pair__inputs .catalog-reference figcaption {
+  margin-top: 5px;
+  font-size: 6.8px;
+}
+.outfit-demo-pair .catalog-viewer {
+  min-height: 520px;
+}
+.outfit-demo-pair .garment-viewer--catalog {
+  min-height: 480px;
+}
+
+/* Retire the old one-outfit-per-row V3 layout if stale styles remain. */
+.outfit-demo-stack,
+.outfit-demo-row,
+.outfit-demo-row__index,
+.outfit-demo-row__inputs {
+  all: unset;
+}
+
+/* Motion section keeps its visual blocks but removes file-path/TODO copy. */
+.video-grid--clean {
+  margin-top: clamp(50px, 6vw, 82px);
+}
+.video-grid--clean .video-placeholder {
+  border: 0;
+}
+
+.paper-actions--simple {
+  margin-top: 34px;
+}
+
+@media (max-width: 1120px) {
+  .main-section-copy {
+    width: min(820px, 78vw);
+  }
+  .single-demo-grid,
+  .outfit-demo-grid {
+    grid-template-columns: 1fr;
+  }
+  .single-demo-pair__body {
+    grid-template-columns: minmax(180px, .7fr) minmax(0, 1.5fr);
+    min-height: 460px;
+  }
+  .outfit-demo-pair__body {
+    grid-template-columns: minmax(190px, .72fr) minmax(0, 1.4fr);
+    min-height: 570px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__eyebrow {
+    font-size: 10px;
+  }
+  .main-section-title {
+    font-size: clamp(54px, 17vw, 86px);
+  }
+  .main-section-copy {
+    width: 100%;
+    margin-left: 0;
+  }
+  .method-figure.media-frame {
+    width: 100%;
+    border-radius: 12px;
+  }
+  .single-demo-pair__body,
+  .outfit-demo-pair__body {
+    grid-template-columns: 1fr;
+  }
+  .single-demo-pair__input,
+  .outfit-demo-pair__inputs {
+    padding: 14px 0 18px;
+  }
+  .single-demo-pair__input .catalog-reference {
+    width: min(72vw, 320px);
+    margin-inline: auto;
+  }
+  .outfit-demo-pair__inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .single-demo-pair__body > .catalog-viewer,
+  .outfit-demo-pair__body > .catalog-viewer {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .outfit-demo-pair .catalog-viewer,
+  .outfit-demo-pair .garment-viewer--catalog {
+    min-height: 440px;
+  }
+}
+
+/* ============================================================
+   V5 FINAL REFINEMENTS
+   ============================================================ */
+
+/* Make the venue line visually ~3x larger without changing its layout
+   footprint. Scaling around the bottom edge makes it grow upward so the
+   OmniFabric title/authors retain their existing position. */
+.hero__eyebrow {
+  transform: scale(3);
+  transform-origin: center bottom;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+/* Main section titles: half the V4 scale, returning to the brighter project blue. */
+.main-section-title {
+  font-size: clamp(34px, 4.1vw, 64px);
+  line-height: .95;
+  letter-spacing: -.036em;
+  color: var(--blue-deep);
+}
+.simple-section--light .main-section-title {
+  color: var(--blue-light);
+}
+
+/* Section paragraphs align directly with their section title instead of
+   floating to the right. */
+.main-section-copy {
+  width: min(800px, 72vw);
+  margin: clamp(20px, 2.5vw, 34px) 0 0 0;
+  text-align: left;
+}
+
+/* Composed-outfit cards: roughly 4/5 of the previous desktop height. */
+.outfit-demo-pair__body {
+  grid-template-columns: minmax(108px, .58fr) minmax(0, 1.42fr);
+  min-height: 416px;
+}
+.outfit-demo-pair__inputs {
+  padding: 10px 12px 10px 0;
+  gap: 8px;
+}
+.outfit-demo-pair .catalog-viewer {
+  min-height: 416px;
+}
+.outfit-demo-pair .garment-viewer--catalog {
+  min-height: 382px;
+}
+.outfit-demo-pair__inputs .catalog-reference figcaption {
+  margin-top: 3px;
+}
+
+/* BibTeX & acknowledgments — a restrained bordered citation block inspired by
+   the clean reference-page treatment used on MultiCube. */
+.bib-ack-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+  gap: clamp(34px, 5vw, 78px);
+  align-items: start;
+  margin-top: clamp(34px, 4.5vw, 62px);
+}
+.bibtex-box {
+  border: 1px solid var(--line);
+  background: rgba(251, 248, 241, .42);
+}
+.bibtex-box__header {
+  min-height: 46px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  color: var(--blue-deep);
+}
+.bibtex-copy {
+  color: var(--blue-deep);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: 8px;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.bibtex-box__code {
+  margin: 0;
+  padding: clamp(18px, 2.2vw, 30px);
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--ink-blue);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: clamp(10px, .82vw, 12px);
+  line-height: 1.65;
+  background: transparent;
+}
+.acknowledgments-block {
+  padding-top: 2px;
+}
+.acknowledgments-block h3 {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  color: var(--blue-deep);
+  font-size: clamp(26px, 2.5vw, 38px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+.acknowledgments-block p {
+  margin: 0;
+  max-width: 540px;
+  font-size: clamp(14px, 1vw, 16px);
+  line-height: 1.72;
+}
+
+@media (max-width: 1120px) {
+  .outfit-demo-pair__body {
+    min-height: 456px;
+    grid-template-columns: minmax(150px, .64fr) minmax(0, 1.36fr);
+  }
+  .outfit-demo-pair .catalog-viewer { min-height: 456px; }
+  .outfit-demo-pair .garment-viewer--catalog { min-height: 418px; }
+}
+
+@media (max-width: 800px) {
+  .bib-ack-layout {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__eyebrow {
+    /* Preserve the 3x visual scale on mobile too. */
+    font-size: 10px;
+    transform: scale(3);
+  }
+  .main-section-title {
+    font-size: clamp(34px, 10vw, 52px);
+  }
+  .main-section-copy {
+    width: 100%;
+    margin-left: 0;
+  }
+  .outfit-demo-pair__body {
+    min-height: 0;
+  }
+  .outfit-demo-pair .catalog-viewer,
+  .outfit-demo-pair .garment-viewer--catalog {
+    min-height: 420px;
+  }
+}
+
+/* ============================================================
+   V6 REFINEMENTS
+   - smaller venue label without moving hero content
+   - centered section headings/copy
+   - tighter vertical rhythm
+   - apricot editorial studio background behind all GLB viewers
+   ============================================================ */
+
+/* 1) Venue label: half of V5's visual scale (3x -> 1.5x).
+   Using transform preserves the existing layout footprint, so the title,
+   subtitle, authors, and links stay at the same vertical position. */
+.hero__eyebrow {
+  transform: scale(1.5);
+  transform-origin: center bottom;
+}
+
+/* 2) Tighter vertical rhythm: approximately half the previous main-section
+   top/bottom whitespace. */
+:root {
+  --section-pad: clamp(44px, 5vw, 80px);
+}
+
+/* Center the editorial section title and its single paragraph as one calm,
+   compact composition. */
+.simple-section {
+  text-align: center;
+}
+.main-section-title {
+  width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+.main-section-copy {
+  width: min(820px, 76vw);
+  margin: clamp(16px, 1.8vw, 24px) auto 0;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* Reduce internal section gaps that otherwise make the page feel sparse even
+   after the main section padding is reduced. */
+.method-figure.media-frame {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+.gallery-section {
+  padding-top: clamp(34px, 3.5vw, 50px);
+  padding-bottom: clamp(42px, 4.5vw, 66px);
+}
+.gallery-section--outfits {
+  padding-top: clamp(32px, 3.5vw, 50px);
+}
+.video-grid--clean {
+  margin-top: clamp(25px, 3vw, 42px);
+}
+
+/* BibTeX & Acknowledgments: centered editorial stack. The code itself remains
+   left-aligned inside the box for readability, while the surrounding content
+   aligns with the centered section language. */
+.bib-ack-layout {
+  width: min(980px, 100%);
+  grid-template-columns: 1fr;
+  gap: clamp(26px, 3.5vw, 44px);
+  margin: clamp(24px, 3vw, 38px) auto 0;
+}
+.bibtex-box {
+  width: 100%;
+}
+.acknowledgments-block {
+  width: min(760px, 100%);
+  margin-inline: auto;
+  text-align: center;
+}
+.acknowledgments-block h3,
+.acknowledgments-block p {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* 4) Shared editorial fashion-studio backdrop for every interactive viewer.
+   The image sits behind the transparent <model-viewer> WebGL canvas. */
+.catalog-viewer__stage,
+.viewer-wrap {
+  background-color: #f6c2a2;
+  background-image: url("../assets/env/studio-apricot.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.garment-viewer,
+.garment-viewer--catalog {
+  background: transparent !important;
+  --poster-color: transparent;
+}
+
+/* Preserve centered text and tighter rhythm on smaller screens. */
+@media (max-width: 900px) {
+  :root { --section-pad: 40px; }
+  .main-section-copy {
+    width: min(760px, 88vw);
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__eyebrow {
+    transform: scale(1.5);
+  }
+  .main-section-copy {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  :root { --section-pad: 32px; }
+}
+
+/* ============================================================
+   V7 FINAL POLISH
+   - equal single/composed card heights
+   - white Motion & detail heading on blue
+   - conventional left-aligned BibTeX code
+   ============================================================ */
+
+/* 1) Composed Outfit cards now use the same vertical scale as Single-Garment
+   cards on desktop. The narrower input stack still accommodates two 3:4 refs. */
+.outfit-demo-pair__body {
+  min-height: 390px;
+}
+.outfit-demo-pair .catalog-viewer {
+  min-height: 390px;
+}
+.outfit-demo-pair .garment-viewer--catalog {
+  min-height: 350px;
+}
+
+/* Match the single-garment responsive height at the one-column breakpoint. */
+@media (max-width: 1120px) {
+  .outfit-demo-pair__body {
+    min-height: 460px;
+  }
+  .outfit-demo-pair .catalog-viewer {
+    min-height: 460px;
+  }
+  .outfit-demo-pair .garment-viewer--catalog {
+    min-height: 430px;
+  }
+}
+
+/* 2) Motion & detail lives on the deep-blue band, so keep the editorial title
+   crisp white rather than light blue. */
+#highlights .main-section-title {
+  color: #FFFFFF;
+}
+
+/* 3) BibTeX follows the conventional code-block layout: preserve whitespace
+   and align every line to the left. */
+.bibtex-box,
+.bibtex-box__code,
+.bibtex-box__code code {
+  text-align: left;
+}
+.bibtex-box__code {
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* ============================================================
+   V8 COMPOSED-OUTFIT HEIGHT FIX
+   The previous rule only matched min-height. Two stacked 3:4 reference
+   images could still force the composed card taller than a single card.
+   Constrain the full card and let each reference crop inside its allotted
+   half-height so both gallery types have the same actual row height.
+   ============================================================ */
+
+@media (min-width: 1121px) {
+  /* Single-garment desktop body is 390px, so composed uses exactly 390px. */
+  .outfit-demo-pair__body {
+    height: 390px;
+    min-height: 390px;
+    max-height: 390px;
+    grid-template-columns: 120px minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs {
+    height: 390px;
+    min-height: 0;
+    padding: 10px 12px 10px 0;
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs .catalog-reference {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs .catalog-reference__image,
+  .outfit-demo-pair__inputs .catalog-reference__empty {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .outfit-demo-pair .catalog-viewer {
+    height: 390px;
+    min-height: 390px;
+    max-height: 390px;
+  }
+
+  .outfit-demo-pair .garment-viewer--catalog {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1120px) {
+  /* At the one-column gallery breakpoint, the matching single card is 460px. */
+  .outfit-demo-pair__body {
+    height: 460px;
+    min-height: 460px;
+    max-height: 460px;
+    grid-template-columns: 150px minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs {
+    height: 460px;
+    min-height: 0;
+    padding: 10px 12px 10px 0;
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs .catalog-reference {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .outfit-demo-pair__inputs .catalog-reference__image,
+  .outfit-demo-pair__inputs .catalog-reference__empty {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .outfit-demo-pair .catalog-viewer {
+    height: 460px;
+    min-height: 460px;
+    max-height: 460px;
+  }
+
+  .outfit-demo-pair .garment-viewer--catalog {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+/* On phones, preserve the natural stacked responsive layout. */
+@media (max-width: 700px) {
+  .outfit-demo-pair__body,
+  .outfit-demo-pair .catalog-viewer,
+  .outfit-demo-pair .garment-viewer--catalog {
+    height: auto;
+    max-height: none;
+  }
+}
+
+/* ============================================================
+   V9 FINAL LAYOUT + AUTHOR AFFILIATIONS
+   - composed viewer width matches single-garment viewer width
+   - standard superscript affiliation treatment in hero
+   - hero text grows upward while preserving the same bottom anchor
+   ============================================================ */
+
+/* 1) Match the composed-outfit pair proportions to the single-garment pair.
+   Both demo types live in equal-width grid cells, so identical internal
+   column ratios produce identical interactive-viewer widths. */
+@media (min-width: 1121px) {
+  .outfit-demo-pair__body {
+    grid-template-columns: minmax(126px, .66fr) minmax(0, 1.34fr);
+  }
+
+  /* The two references share the same left-column footprint as the single
+     reference. Crop each vertically within half the available height. */
+  .outfit-demo-pair__inputs {
+    padding: 10px 16px 10px 0;
+    gap: 8px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1120px) {
+  .outfit-demo-pair__body {
+    grid-template-columns: minmax(180px, .7fr) minmax(0, 1.5fr);
+  }
+}
+
+/* 2) Hero author / affiliation treatment, following the common CV research
+   project-page convention: indexed authors + a compact affiliation line. */
+.hero__authors sup,
+.hero__affiliations sup {
+  font-family: var(--font-ui);
+  font-size: .58em;
+  line-height: 0;
+  vertical-align: super;
+  letter-spacing: 0;
+  margin-left: 1px;
+}
+
+.hero__affiliations {
+  margin: 5px auto 0;
+  width: min(1180px, 95%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 3px 18px;
+  color: rgba(255,255,255,.94);
+  font-family: var(--font-ui);
+  font-size: clamp(9px, .68vw, 11.5px);
+  line-height: 1.45;
+  letter-spacing: .015em;
+  font-weight: 300;
+  text-shadow: 0 1px 12px rgba(17,48,73,.15);
+}
+
+.hero__affiliations span {
+  white-space: nowrap;
+}
+
+/* 3) Keep the masthead's bottom line in its prior position. On desktop the
+   title zone retains the same footprint but packs content against its bottom;
+   slightly larger typography therefore expands upward rather than pushing the
+   links downward. */
+@media (min-width: 701px) {
+  .hero__title-zone {
+    height: clamp(210px, 22vw, 320px);
+    min-height: 0;
+    justify-content: flex-end;
+    overflow: visible;
+  }
+
+  .hero__title {
+    font-size: clamp(74px, 10.15vw, 164px);
+  }
+
+  .hero__subtitle {
+    font-size: clamp(19px, 1.88vw, 31px);
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+
+  .hero__authors {
+    max-width: 1320px;
+    font-size: clamp(13px, 1.12vw, 18.5px);
+    line-height: 1.55;
+  }
+
+  .hero__links {
+    margin-top: 9px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__affiliations {
+    width: 100%;
+    gap: 2px 10px;
+    font-size: 8px;
+    line-height: 1.4;
+  }
+  .hero__affiliations span {
+    white-space: normal;
+  }
+}
+
+/* ============================================================
+   V10 CONTENT REFINEMENTS
+   - hero title reduced to 3/4 of its V9 size at every breakpoint
+   - affiliation line now matches the author line's type size exactly
+   ============================================================ */
+
+/* 1) "OmniFabric" title at 3/4 of the V9 scale. The title-zone stays
+   bottom-anchored, so the smaller title simply grows less far upward. */
+@media (max-width: 900px) {
+  .hero__title {
+    font-size: clamp(43.5px, 11.25vw, 75px);
+  }
+}
+
+@media (min-width: 701px) {
+  .hero__title {
+    font-size: clamp(55.5px, 7.6125vw, 123px);
+  }
+}
+
+/* 2) Affiliation line matches the author line's type size at every
+   breakpoint (mirrors .hero__authors' base / 701px / 600px tiers). */
+.hero__affiliations {
+  font-size: clamp(12px, 1.05vw, 17px);
+  line-height: 1.7;
+}
+
+@media (min-width: 701px) {
+  .hero__affiliations {
+    font-size: clamp(13px, 1.12vw, 18.5px);
+    line-height: 1.55;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero__affiliations {
+    font-size: 10px;
+    line-height: 1.55;
+  }
+}
+
+/* ============================================================
+   V11 HERO MASTHEAD POSITION
+   - whole text block moves upward: top margin above "SIGGRAPH Asia
+     2026" is now half of its previous size (desktop and mobile)
+   ============================================================ */
+.hero__masthead {
+  padding-top: clamp(2.5vh, 3.75vw, 4.5vh);
+}
+
+@media (max-width: 900px) {
+  .hero__masthead {
+    padding-top: 12px;
+  }
+}
+
+/* ============================================================
+   V12 VIEWER INTERACTION HINT
+   - small floating "drag to rotate" cue on each interactive window,
+     shown on load and faded out after the first real user drag
+   ============================================================ */
+.viewer-hint {
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, .55);
+  border: 1px solid rgba(52, 72, 99, .18);
+  color: var(--ink-blue);
+  transition: opacity .35s ease;
+}
+.viewer-hint span {
+  font-size: 1.2em;
+  line-height: 1;
+}
+.viewer-hint.is-hidden {
+  opacity: 0;
+}
+
+.gallery-section[hidden] {
+  display: none;
+}
+

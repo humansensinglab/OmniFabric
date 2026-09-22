@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="OmniFabric: Coherent UV Space Texture Synthesis for 3D Garment Reconstruction." />
+  <meta name="theme-color" content="#5d98c4" />
+
+  <title>OmniFabric — Coherent UV Space Texture Synthesis for 3D Garment Reconstruction</title>
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Pinned for reproducibility. model-viewer 4.3.1 is current at scaffold creation. -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ========================= HERO ========================= -->
+  <header class="hero" id="top" aria-label="OmniFabric teaser">
+    <video
+      class="hero__video"
+      id="heroVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="assets/hero/hero-poster.png"
+      aria-hidden="true"
+    >
+      <source id="heroVideoSource" src="assets/hero/omnifabric_teaser.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__wash" aria-hidden="true"></div>
+
+    <div class="hero__masthead shell">
+      <div class="hero__title-zone">
+        <p class="hero__eyebrow">SIGGRAPH Asia 2026</p>
+        <h1 class="hero__title">OmniFabric</h1>
+        <p class="hero__subtitle">Coherent UV Space Texture Synthesis for 3D Garment Reconstruction</p>
+
+        <p class="hero__authors" id="heroAuthors">
+          <a href="#" data-author="ding">Ding-Jiun Huang</a><sup>1</sup>
+          <span>·</span>
+          <a href="https://harrywang355.github.io/">Yuanhao Wang</a><sup>2</sup>
+          <span>·</span>
+          <a href="https://czhang0528.github.io/">Cheng Zhang</a><sup>3</sup>
+          <span>·</span>
+          <a href="https://hbertiche.github.io/">Hugo Bertiche</a><sup>4</sup>
+          <span>·</span>
+          <a href="https://alexandruichim.com/">Alexandru-Eugen Ichim</a><sup>4</sup>
+          <span>·</span>
+          <a href="https://thabobeeler.com/">Thabo Beeler</a><sup>4</sup>
+          <span>·</span>
+          <a href="https://www.cs.cmu.edu/~ftorre/">Fernando De la Torre</a><sup>1</sup>
+        </p>
+
+        <div class="hero__affiliations" aria-label="Author affiliations">
+          <span><sup>1</sup>Carnegie Mellon University</span>
+          <span><sup>2</sup>University of Washington</span>
+          <span><sup>3</sup>Texas A&amp;M University</span>
+          <span><sup>4</sup>Google</span>
+        </div>
+
+        <nav class="hero__links" aria-label="Project resources">
+          <a id="paperLink" href="assets/paper/omnifabric.pdf">Paper ↗</a>
+          <!-- <a id="videoLink" href="#highlights">Video ↓</a> -->
+          <a id="codeLink" href="#" class="is-disabled" aria-disabled="true">Code ↗</a>
+          <button class="text-link" id="copyBibtex" type="button">BibTeX +</button>
+        </nav>
+      </div>
+    </div>
+
+    <a class="hero__scroll" href="#introduction" aria-label="Scroll to introduction">
+      <span>Scroll</span><span aria-hidden="true">↓</span>
+    </a>
+  </header>
+
+  <main id="main">
+    <!-- ======================= OVERVIEW ======================= -->
+    <section class="section section--ivory" id="introduction">
+      <div class="shell simple-section reveal">
+        <h2 class="main-section-title">Overview</h2>
+        <p class="main-section-copy">
+          Given in-the-wild images of apparels, OmniFabric synthesizes simulation-ready 3D garments with textures free from distortions and baked-in artifacts like shadows and wrinkles. 
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================== METHOD ======================== -->
+    <section class="section section--paper" id="method">
+      <div class="shell simple-section reveal">
+        <h2 class="main-section-title">Method</h2>
+        <p class="main-section-copy">
+          Given a reference clothing image, OmniFabric first generates a roughly textured mesh by projecting generated multi-views onto a predicted garment mesh. Then, a texture normalization model rectifies distortions and removes baked-in artifacts like shadows and wrinkles on the sewing pattern UV maps. The synthesized textured sewing pattern can be directly put into any existing engine for simulation under diverse lightings and dynamics.
+        </p>
+
+        <figure class="method-figure media-frame">
+          <img
+            class="method-image"
+            src="assets/images/figures/method.webp"
+            alt="OmniFabric method overview"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= INTERACTIVE DISPLAY ================= -->
+    <section class="section section--ivory atelier" id="interactive">
+      <div class="shell simple-section reveal">
+        <h2 class="main-section-title">Interactive Display</h2>
+        <p class="main-section-copy">
+          Explore the synthesized garments directly in 3D and compare each interactive result with its reference image.
+        </p>
+      </div>
+
+      <div class="shell gallery-section reveal" id="singleGarmentDemo">
+        <div class="gallery-section__header">
+          <div>
+            <span class="demo-letter">A</span>
+            <h3>Single-Garment Reconstruction</h3>
+          </div>
+        </div>
+        <div class="single-demo-grid" data-demo-grid="single" aria-label="Single-garment interactive examples"></div>
+      </div>
+
+      <div class="shell gallery-section gallery-section--outfits reveal" id="outfitDemo">
+        <div class="gallery-section__header">
+          <div>
+            <span class="demo-letter">B</span>
+            <h3>Composed Outfit Reconstruction</h3>
+          </div>
+        </div>
+        <div class="outfit-demo-grid" data-demo-grid="outfit" aria-label="Composed outfit interactive examples"></div>
+      </div>
+    </section>
+
+    <!-- ===================== MOTION & DETAIL ===================== -->
+    <!-- <section class="section section--blue" id="highlights">
+      <div class="shell simple-section simple-section--light reveal">
+        <h2 class="main-section-title">Motion &amp; detail</h2>
+        <p class="main-section-copy">
+          Dynamic renderings highlight how the reconstructed garments retain their appearance as the wearer moves and the camera viewpoint changes.
+        </p>
+
+        <div class="video-grid video-grid--clean">
+          <div class="video-placeholder"><span>VIDEO 01</span></div>
+          <div class="video-placeholder"><span>VIDEO 02</span></div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ================= BIBTEX & ACKNOWLEDGMENTS ================= -->
+    <section class="section section--ivory" id="bibtex">
+      <div class="shell simple-section reveal">
+        <h2 class="main-section-title">BibTeX &amp; Acknowledgments</h2>
+
+        <div class="bib-ack-layout">
+          <div class="bibtex-box" aria-label="BibTeX citation">
+            <div class="bibtex-box__header">
+              <span>BibTeX</span>
+              <button class="text-link bibtex-copy" id="copyBibtexBottom" type="button">Copy</button>
+            </div>
+            <pre class="bibtex-box__code"><code id="bibtexBlock"></code></pre>
+          </div>
+
+          <div class="acknowledgments-block">
+            <h3>Acknowledgments</h3>
+            <p>
+              We use CLO3D for all the garment simulations in this work and use Blender to render garment animations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__grid">
+      <div class="footer__mark">OmniFabric</div>
+      <p>SIGGRAPH Asia 2026</p>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/demos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
