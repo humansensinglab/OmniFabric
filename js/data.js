@@ -18,7 +18,7 @@
 
 window.OMNIFABRIC = {
   links: {
-    paper: "assets/paper/omnifabric.pdf",
+    paper: "https://arxiv.org/abs/2609.30234",
     video: "#highlights",
     code: "https://github.com/humansensinglab/OmniFabric",
   },
