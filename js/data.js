@@ -20,10 +20,18 @@ window.OMNIFABRIC = {
   links: {
     paper: "assets/paper/omnifabric.pdf",
     video: "#highlights",
-    code: "", // Put GitHub code URL here when public.
+    code: "https://github.com/humansensinglab/OmniFabric",
   },
 
-  bibtex: `Coming soon...`,
+  bibtex: `@misc{huang2026omnifabriccoherentuvspace,
+      title={OmniFabric: Coherent UV Space Texture Synthesis for 3D Garment Reconstruction}, 
+      author={Ding-Jiun Huang and Yuanhao Wang and Cheng Zhang and Hugo Bertiche and Alexandru-Eugen Ichim and Thabo Beeler and Fernando De la Torre},
+      year={2026},
+      eprint={2609.30234},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2609.30234}, 
+}`,
 
   single: [
     {
