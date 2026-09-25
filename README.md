@@ -2,7 +2,7 @@
 
 ### SIGGRAPH Asia 2026
 
-Ding-Jiun Huang<sup>1</sup>&nbsp;&nbsp;
+[Ding-Jiun Huang](https://willydjhuang.github.io/)<sup>1</sup>&nbsp;&nbsp;
 [Yuanhao Wang](https://harrywang355.github.io/)<sup>2</sup>&nbsp;&nbsp;
 [Cheng Zhang](https://czhang0528.github.io/)<sup>3</sup>&nbsp;&nbsp;
 [Hugo Bertiche](https://hbertiche.github.io/)<sup>4</sup>&nbsp;&nbsp;
