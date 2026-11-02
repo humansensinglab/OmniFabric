@@ -1,0 +1,30 @@
+diff --git a/pygarment/meshgen/render/pythonrender.py b/pygarment/meshgen/render/pythonrender.py
+index 827cf3c..6550c6f 100644
+--- a/pygarment/meshgen/render/pythonrender.py
++++ b/pygarment/meshgen/render/pythonrender.py
+@@ -91,8 +91,8 @@ def create_camera(pyrender, pyrender_body_mesh, scene, side, camera_location=Non
+         [0.0, 0.0, 0.0, 1.0]
+     ])
+ 
+-    camera_pose = rotate_matrix_x(camera_pose, -15)
+-    camera_pose = rotate_matrix_y(camera_pose, 20)
++    camera_pose = rotate_matrix_x(camera_pose, 0)  # 0° for exact frontal view, -10
++    camera_pose = rotate_matrix_y(camera_pose, 0)  # 0° for exact frontal view, 20
+     if side == 'back':
+         camera_pose = rotate_matrix_y(camera_pose, 180)
+ 
+diff --git a/pygarment/meshgen/render/texture_utils.py b/pygarment/meshgen/render/texture_utils.py
+index 461ab21..ed6ef6a 100644
+--- a/pygarment/meshgen/render/texture_utils.py
++++ b/pygarment/meshgen/render/texture_utils.py
+@@ -65,9 +65,8 @@ def texture_mesh_islands(
+ def _uv_connected_components(face_texture_coords):
+ 
+     # Find connected components of face and vertex texture coords
+-    face_components = igl.facet_components(face_texture_coords)
++    num_ccs, face_components = igl.facet_components(face_texture_coords)
+     vert_components = igl.vertex_components(face_texture_coords)
+-    num_ccs = max(face_components) + 1
+ 
+     return vert_components, face_components, num_ccs
+ 

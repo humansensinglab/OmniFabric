@@ -1,0 +1,11 @@
+# third-party code is cloned by install.sh; only our patches are tracked
+third_party/*
+!third_party/patches/
+
+checkpoints/
+outputs/
+
+__pycache__/
+*.pyc
+*.egg-info/
+.DS_Store

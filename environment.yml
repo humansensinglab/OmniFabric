@@ -1,0 +1,13 @@
+# Conda environment for the whole OmniFabric inference pipeline (everything except the ComfyUI server).
+#   conda env create -f environment.yml && conda activate omnifabric && CUDA_HOME=/usr/local/cuda-11.8 bash install.sh
+# A full CUDA 11.8 toolkit (https://developer.nvidia.com/cuda-11-8-0-download-archive) is needed to build NVIDIA Warp,
+# Hunyuan3D-2's rasterizer and flash-attn; conda's cuda-toolkit lacks the static NVRTC libraries Warp links against.
+name: omnifabric
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - git
+  - git-lfs
+  - gxx=11.4            # CUDA 11.8 needs gcc <= 11 to build Warp / custom_rasterizer / flash-attn

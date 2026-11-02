@@ -1,0 +1,265 @@
+diff --git a/hy3dgen/texgen/differentiable_renderer/mesh_render.py b/hy3dgen/texgen/differentiable_renderer/mesh_render.py
+index 6f83a36..fcc4081 100644
+--- a/hy3dgen/texgen/differentiable_renderer/mesh_render.py
++++ b/hy3dgen/texgen/differentiable_renderer/mesh_render.py
+@@ -140,12 +140,16 @@ class MeshRender():
+             (2 / 512) * max(self.default_resolution[0], self.default_resolution[1]))
+         self.bake_mode = bake_mode
+ 
++        # New: controls for projection boundary processing
++        self.enable_edge_shrink = True
++        self.enable_boundary_mask = True
++
+         self.raster_mode = raster_mode
+         if self.raster_mode == 'cr':
+             import custom_rasterizer as cr
+             self.raster = cr
+         else:
+-            raise f'No raster named {self.raster_mode}'
++            raise NotImplementedError(f'No raster named {self.raster_mode}')
+ 
+         if camera_type == 'orth':
+             self.ortho_scale = 1.2
+@@ -160,7 +164,7 @@ class MeshRender():
+                 0.01, 100.0
+             )
+         else:
+-            raise f'No camera type {camera_type}'
++            raise NotImplementedError(f'No camera type {camera_type}')
+ 
+     def raster_rasterize(self, pos, tri, resolution, ranges=None, grad_db=True):
+ 
+@@ -172,7 +176,7 @@ class MeshRender():
+             rast_out = torch.cat((barycentric, findices.unsqueeze(-1)), dim=-1)
+             rast_out = rast_out.unsqueeze(0)
+         else:
+-            raise f'No raster named {self.raster_mode}'
++            raise NotImplementedError(f'No raster named {self.raster_mode}')
+ 
+         return rast_out, rast_out_db
+ 
+@@ -186,7 +190,7 @@ class MeshRender():
+                 uv = uv.unsqueeze(0)
+             textc = self.raster.interpolate(uv, findices, barycentric, uv_idx)
+         else:
+-            raise f'No raster named {self.raster_mode}'
++            raise NotImplementedError(f'No raster named {self.raster_mode}')
+ 
+         return textc, textd
+ 
+@@ -194,11 +198,41 @@ class MeshRender():
+                        boundary_mode='wrap', max_mip_level=None):
+ 
+         if self.raster_mode == 'cr':
+-            raise f'Texture is not implemented in cr'
++            # Implement texture sampling using PyTorch's grid_sample
++            # tex: [B, H, W, C] or [H, W, C]
++            # uv: [B, N, 2] or [N, 2] - UV coordinates in range [0, 1]
++            
++            # Ensure tex is in the right format [B, C, H, W]
++            if tex.dim() == 3:  # [H, W, C]
++                tex = tex.permute(2, 0, 1).unsqueeze(0)  # [1, C, H, W]
++            elif tex.dim() == 4 and tex.shape[-1] <= 4:  # [B, H, W, C]
++                tex = tex.permute(0, 3, 1, 2)  # [B, C, H, W]
++            
++            # Handle UV coordinates - they might have extra dimensions
++            # Remove any extra dimensions from UV
++            while uv.dim() > 4:
++                uv = uv.squeeze(-2)  # Remove extra dimensions like [B, H, W, 1, 2] -> [B, H, W, 2]
++            
++            # Ensure UV is in the right format [B, H, W, 2]
++            if uv.dim() == 2:  # [N, 2]
++                uv = uv.unsqueeze(0).unsqueeze(0)  # [1, 1, N, 2]
++            elif uv.dim() == 3:  # [B, N, 2]
++                uv = uv.unsqueeze(1)  # [B, 1, N, 2]
++            
++            # Convert UV coordinates from [0, 1] to [-1, 1] for grid_sample
++            # grid_sample expects coordinates in range [-1, 1]
++            uv_grid = uv * 2.0 - 1.0  # [B, H, W, 2]
++            
++            # Sample texture using grid_sample
++            # tex: [B, C, H, W], uv_grid: [B, H, W, 2]
++            sampled = F.grid_sample(tex, uv_grid, mode='bilinear', padding_mode='border', align_corners=False)
++            
++            # Convert from [B, C, H, W] to [B, H, W, C] to match expected format
++            sampled = sampled.permute(0, 2, 3, 1)
++            
++            return sampled
+         else:
+-            raise f'No raster named {self.raster_mode}'
+-
+-        return color
++            raise NotImplementedError(f'No raster named {self.raster_mode}')
+ 
+     def raster_antialias(self, color, rast, pos, tri, topology_hash=None, pos_gradient_boost=1.0):
+ 
+@@ -206,7 +240,7 @@ class MeshRender():
+             # Antialias has not been supported yet
+             color = color
+         else:
+-            raise f'No raster named {self.raster_mode}'
++            raise NotImplementedError(f'No raster named {self.raster_mode}')
+ 
+         return color
+ 
+@@ -337,7 +371,6 @@ class MeshRender():
+ 
+     def _render(
+         self,
+-        glctx,
+         mvp,
+         pos,
+         pos_idx,
+@@ -353,7 +386,7 @@ class MeshRender():
+         if isinstance(resolution, (int, float)):
+             resolution = [resolution, resolution]
+         rast_out, rast_out_db = self.raster_rasterize(
+-            glctx, pos_clip, pos_idx, resolution=resolution)
++            pos_clip, pos_idx, resolution=resolution)
+ 
+         tex = tex.contiguous()
+         if filter_mode == 'linear-mipmap-linear':
+@@ -704,7 +737,9 @@ class MeshRender():
+         depth_normalized = (depth - depth_min) / (depth_max - depth_min)
+         depth_image = depth_normalized * visible_mask  # Mask out background.
+ 
+-        sketch_image = self.render_sketch_from_depth(depth_image)
++        # Only compute depth-edge sketch if boundary mask is enabled
++        if self.enable_boundary_mask:
++            sketch_image = self.render_sketch_from_depth(depth_image)
+ 
+         lookat = torch.tensor([[0, 0, -1]], device=self.device)
+         cos_image = torch.nn.functional.cosine_similarity(
+@@ -714,25 +749,29 @@ class MeshRender():
+         cos_thres = np.cos(self.bake_angle_thres / 180 * np.pi)
+         cos_image[cos_image < cos_thres] = 0
+ 
+-        # shrink
+-        kernel_size = self.bake_unreliable_kernel_size * 2 + 1
+-        kernel = torch.ones(
+-            (1, 1, kernel_size, kernel_size), dtype=torch.float32).to(
+-            sketch_image.device)
+-
+-        visible_mask = visible_mask.permute(2, 0, 1).unsqueeze(0).float()
+-        visible_mask = F.conv2d(
+-            1.0 - visible_mask,
+-            kernel,
+-            padding=kernel_size // 2)
+-        visible_mask = 1.0 - (visible_mask > 0).float()  # 二值化
+-        visible_mask = visible_mask.squeeze(0).permute(1, 2, 0)
+-
+-        sketch_image = sketch_image.permute(2, 0, 1).unsqueeze(0)
+-        sketch_image = F.conv2d(sketch_image, kernel, padding=kernel_size // 2)
+-        sketch_image = (sketch_image > 0).float()  # 二值化
+-        sketch_image = sketch_image.squeeze(0).permute(1, 2, 0)
+-        visible_mask = visible_mask * (sketch_image < 0.5)
++        # Edge shrink/erosion control
++        if self.enable_edge_shrink:
++            kernel_size = self.bake_unreliable_kernel_size * 2 + 1
++            kernel = torch.ones(
++                (1, 1, kernel_size, kernel_size), dtype=torch.float32).to(
++                depth_image.device)
++
++            visible_mask_ = visible_mask.permute(2, 0, 1).unsqueeze(0).float()
++            visible_mask_ = F.conv2d(
++                1.0 - visible_mask_,
++                kernel,
++                padding=kernel_size // 2)
++            visible_mask_ = 1.0 - (visible_mask_ > 0).float()
++            visible_mask = visible_mask_.squeeze(0).permute(1, 2, 0)
++
++            if self.enable_boundary_mask:
++                sketch_image_ = sketch_image.permute(2, 0, 1).unsqueeze(0)
++                sketch_image_ = F.conv2d(sketch_image_, kernel, padding=kernel_size // 2)
++                sketch_image_ = (sketch_image_ > 0).float()
++                sketch_image = sketch_image_.squeeze(0).permute(1, 2, 0)
++        # Apply boundary masking if enabled
++        if self.enable_boundary_mask:
++            visible_mask = visible_mask * (sketch_image < 0.5)
+ 
+         cos_image[visible_mask == 0] = 0
+ 
+@@ -743,16 +782,22 @@ class MeshRender():
+             uv = uv.squeeze(0).contiguous().view(-1, 2)[proj_mask]
+             image = image.squeeze(0).contiguous().view(-1, channel)[proj_mask]
+             cos_image = cos_image.contiguous().view(-1, 1)[proj_mask]
+-            sketch_image = sketch_image.contiguous().view(-1, 1)[proj_mask]
++            boundary_map = None
++            if self.enable_boundary_mask:
++                sketch_image = sketch_image.contiguous().view(-1, 1)[proj_mask]
+ 
+             texture = linear_grid_put_2d(
+                 self.texture_size[1], self.texture_size[0], uv[..., [1, 0]], image)
+             cos_map = linear_grid_put_2d(
+                 self.texture_size[1], self.texture_size[0], uv[..., [1, 0]], cos_image)
+-            boundary_map = linear_grid_put_2d(
+-                self.texture_size[1], self.texture_size[0], uv[..., [1, 0]], sketch_image)
++            if self.enable_boundary_mask:
++                boundary_map = linear_grid_put_2d(
++                    self.texture_size[1], self.texture_size[0], uv[..., [1, 0]], sketch_image)
++            else:
++                # If boundary mask disabled, return an all-zero boundary map sized like cos_map
++                boundary_map = torch.zeros_like(cos_map)
+         else:
+-            raise f'No bake mode {method}'
++            raise NotImplementedError(f'No bake mode {method}')
+ 
+         return texture, cos_map, boundary_map
+ 
+diff --git a/hy3dgen/texgen/pipelines.py b/hy3dgen/texgen/pipelines.py
+index 6d6b89f..08dce62 100644
+--- a/hy3dgen/texgen/pipelines.py
++++ b/hy3dgen/texgen/pipelines.py
+@@ -142,7 +142,7 @@ class Hunyuan3DPaintPipeline:
+             texture, ori_trust_map = self.render.fast_bake_texture(
+                 project_textures, project_weighted_cos_maps)
+         else:
+-            raise f'no method {method}'
++            raise NotImplementedError(f'no method {method}')
+         return texture, ori_trust_map > 1E-8
+ 
+     def texture_inpaint(self, texture, mask):
+@@ -152,7 +152,8 @@ class Hunyuan3DPaintPipeline:
+ 
+         return texture
+ 
+-    def recenter_image(self, image, border_ratio=0.2):
++    def recenter_image(self, image, border_ratio=0.2, is_resized=False):
++        original_size = image.size
+         if image.mode == 'RGB':
+             return image
+         elif image.mode == 'L':
+@@ -160,7 +161,7 @@ class Hunyuan3DPaintPipeline:
+             return image
+ 
+         alpha_channel = np.array(image)[:, :, 3]
+-        non_zero_indices = np.argwhere(alpha_channel > 0)
++        non_zero_indices = np.argwhere(alpha_channel > 220)
+         if non_zero_indices.size == 0:
+             raise ValueError("Image is fully transparent")
+ 
+@@ -170,8 +171,8 @@ class Hunyuan3DPaintPipeline:
+         cropped_image = image.crop((min_col, min_row, max_col + 1, max_row + 1))
+ 
+         width, height = cropped_image.size
+-        border_width = int(width * border_ratio)
+-        border_height = int(height * border_ratio)
++        border_width = int(width * border_ratio) if not is_resized else int(original_size[0] - width) // 2
++        border_height = int(height * border_ratio) if not is_resized else int(original_size[1] - height) // 2
+ 
+         new_width = width + 2 * border_width
+         new_height = height + 2 * border_height
+diff --git a/hy3dgen/texgen/utils/multiview_utils.py b/hy3dgen/texgen/utils/multiview_utils.py
+index 4d6a6ba..8083ab0 100644
+--- a/hy3dgen/texgen/utils/multiview_utils.py
++++ b/hy3dgen/texgen/utils/multiview_utils.py
+@@ -33,7 +33,8 @@ class Multiview_Diffusion_Net():
+ 
+         pipeline = DiffusionPipeline.from_pretrained(
+             multiview_ckpt_path,
+-            custom_pipeline=custom_pipeline_path, torch_dtype=torch.float16)
++            custom_pipeline=custom_pipeline_path, torch_dtype=torch.float16,
++            trust_remote_code=True)
+ 
+         if config.pipe_name in ['hunyuanpaint']:
+             pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config,
